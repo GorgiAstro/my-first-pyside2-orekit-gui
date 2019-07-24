@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>tleFileDialog.qml</file>
+        <file>icons/slowDownIcon_32_32.png</file>
+        <file>icons/satelliteIcon_32_32.png</file>
+        <file>icons/reverseIcon_32_32.png</file>
+        <file>icons/restartIcon_32_32.png</file>
+        <file>icons/playIcon_32_32.png</file>
+        <file>icons/pauseIcon_32_32.png</file>
+        <file>icons/fastForwardIcon_32_32.png</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>icons/stopIcon_32_32.png</file>
+    </qresource>
+</RCC>

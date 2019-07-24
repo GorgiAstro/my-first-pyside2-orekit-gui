@@ -1,0 +1,8 @@
+name: mycondaenv
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.7
+  - orekit
+  - pip:
+    - PySide2<5.12
