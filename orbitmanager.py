@@ -37,47 +37,47 @@ class OrbitManager(QObject):
                                 self._nadir_pointing,
                                 1000.0)
 
-        self._rx_eme2000 = 0.0
-        self._ry_eme2000 = 0.0
-        self._rz_eme2000 = 0.0
+        self._rx_itrf = 0.0
+        self._ry_itrf = 0.0
+        self._rz_itrf = 0.0
         self.positionUpdated.emit()
 
     @Slot()
     def propagateToCurrentTime(self):
-        pv_coordinates = self._propagator.getPVCoordinates(datetime_to_absolutedate(datetime.now()),
-                                                           self._eme2000)
-        pos_eme2000 = pv_coordinates.getPosition()
-        self.set_rx_eme2000(1e-3 * pos_eme2000.getX())  # Converting to km
-        self.set_ry_eme2000(1e-3 * pos_eme2000.getY())
-        self.set_rz_eme2000(1e-3 * pos_eme2000.getZ())
+        pv_coordinates = self._propagator.getPVCoordinates(datetime_to_absolutedate(datetime.utcnow()),
+                                                           self._itrf)
+        pos_itrf = pv_coordinates.getPosition()
+        self.set_rx_itrf(1e-3 * pos_itrf.getX())  # Converting to km
+        self.set_ry_itrf(1e-3 * pos_itrf.getY())
+        self.set_rz_itrf(1e-3 * pos_itrf.getZ())
         self.propagationFinished.emit()
 
     @Property(float, notify=positionUpdated)
-    def rx_eme2000(self):
-        return self._rx_eme2000
+    def rx_itrf(self):
+        return self._rx_itrf
 
-    @rx_eme2000.setter
-    def set_rx_eme2000(self, rx_eme2000):
-        if rx_eme2000 != self._rx_eme2000:
-            self._rx_eme2000 = rx_eme2000
+    @rx_itrf.setter
+    def set_rx_itrf(self, rx_itrf):
+        if rx_itrf != self._rx_itrf:
+            self._rx_itrf = rx_itrf
             self.positionUpdated.emit()
 
     @Property(float, notify=positionUpdated)
-    def ry_eme2000(self):
-        return self._ry_eme2000
+    def ry_itrf(self):
+        return self._ry_itrf
 
-    @ry_eme2000.setter
-    def set_ry_eme2000(self, ry_eme2000):
-        if ry_eme2000 != self._ry_eme2000:
-            self._ry_eme2000 = ry_eme2000
+    @ry_itrf.setter
+    def set_ry_itrf(self, ry_itrf):
+        if ry_itrf != self._ry_itrf:
+            self._ry_itrf = ry_itrf
             self.positionUpdated.emit()
 
     @Property(float, notify=positionUpdated)
-    def rz_eme2000(self):
-        return self._rz_eme2000
+    def rz_itrf(self):
+        return self._rz_itrf
 
-    @rz_eme2000.setter
-    def set_rz_eme2000(self, rz_eme2000):
-        if rz_eme2000 != self._rz_eme2000:
-            self._rz_eme2000 = rz_eme2000
+    @rz_itrf.setter
+    def set_rz_itrf(self, rz_itrf):
+        if rz_itrf != self._rz_itrf:
+            self._rz_itrf = rz_itrf
             self.positionUpdated.emit()

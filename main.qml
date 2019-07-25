@@ -27,7 +27,7 @@ Window {
         id: button
         x: 115
         y: 49
-        text: qsTr("Get current ISS position (EME2000)")
+        text: qsTr("Get current ISS position (ECEF)")
         onReleased: orbitManager.propagateToCurrentTime() // Trigger a slot in the Python class
     }
 
@@ -35,7 +35,7 @@ Window {
         id: xPosition
         x: 115
         y: 163
-        text: Number(orbitManager.rx_eme2000).toFixed(3) // Displays a member variable of the Python class
+        text: Number(orbitManager.rx_itrf).toFixed(3) // Displays a member variable of the Python class
         horizontalAlignment: Text.AlignHCenter
         readOnly: true
     }
@@ -44,7 +44,7 @@ Window {
         id: yPosition
         x: 260
         y: 163
-        text: Number(orbitManager.ry_eme2000).toFixed(3)
+        text: Number(orbitManager.ry_itrf).toFixed(3)
         horizontalAlignment: Text.AlignHCenter
         readOnly: true
     }
@@ -53,7 +53,7 @@ Window {
         id: zPosition
         x: 399
         y: 163
-        text: Number(orbitManager.rz_eme2000).toFixed(3)
+        text: Number(orbitManager.rz_itrf).toFixed(3)
         horizontalAlignment: Text.AlignHCenter
         readOnly: true
     }
