@@ -42,16 +42,6 @@ class OrbitManager(QObject):
         self._rz_itrf = 0.0
         self.positionUpdated.emit()
 
-    @Slot()
-    def propagateToCurrentTime(self):
-        pv_coordinates = self._propagator.getPVCoordinates(datetime_to_absolutedate(datetime.utcnow()),
-                                                           self._itrf)
-        pos_itrf = pv_coordinates.getPosition()
-        self.set_rx_itrf(1e-3 * pos_itrf.getX())  # Converting to km
-        self.set_ry_itrf(1e-3 * pos_itrf.getY())
-        self.set_rz_itrf(1e-3 * pos_itrf.getZ())
-        self.propagationFinished.emit()
-
     @Property(float, notify=positionUpdated)
     def rx_itrf(self):
         return self._rx_itrf
@@ -81,3 +71,16 @@ class OrbitManager(QObject):
         if rz_itrf != self._rz_itrf:
             self._rz_itrf = rz_itrf
             self.positionUpdated.emit()
+
+    @Slot()
+    def propagateToCurrentTime(self):
+        pv_coordinates = self._propagator.getPVCoordinates(datetime_to_absolutedate(datetime.utcnow()),
+                                                           self._itrf)
+        pos_itrf = pv_coordinates.getPosition()
+        self.set_rx_itrf(1e-3 * pos_itrf.getX())  # Converting to km
+        self.set_ry_itrf(1e-3 * pos_itrf.getY())
+        self.set_rz_itrf(1e-3 * pos_itrf.getZ())
+
+        self.set_altitude(1e-3 * (pos_itrf.getNorm() - Constants.WGS84_EARTH_EQUATORIAL_RADIUS))
+
+        self.propagationFinished.emit()
