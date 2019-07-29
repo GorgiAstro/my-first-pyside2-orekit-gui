@@ -14,6 +14,7 @@ from org.hipparchus.geometry.euclidean.threed import *
 
 class OrbitManager(QObject):
     positionUpdated = Signal()
+    altitudeUpdated = Signal()
     propagationFinished = Signal()
 
     def __init__(self, parent=None):
@@ -41,6 +42,9 @@ class OrbitManager(QObject):
         self._ry_itrf = 0.0
         self._rz_itrf = 0.0
         self.positionUpdated.emit()
+
+        self._altitude = 0.0
+        self.altitudeUpdated.emit()
 
     @Property(float, notify=positionUpdated)
     def rx_itrf(self):
@@ -71,6 +75,16 @@ class OrbitManager(QObject):
         if rz_itrf != self._rz_itrf:
             self._rz_itrf = rz_itrf
             self.positionUpdated.emit()
+
+    @Property(float, notify=altitudeUpdated)
+    def altitude(self):
+        return self._altitude
+
+    @altitude.setter
+    def set_altitude(self, altitude):
+        if altitude != self._altitude:
+            self._altitude = altitude
+            self.altitudeUpdated.emit()
 
     @Slot()
     def propagateToCurrentTime(self):
