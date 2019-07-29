@@ -1,8 +1,10 @@
 name: mycondaenv
 channels:
+  - defaults
   - conda-forge
 dependencies:
-  - python>=3.7
+  - python
   - orekit
+  - pip
   - pip:
-    - PySide2<5.12
+    - PySide2
