@@ -64,7 +64,7 @@ Window {
         y: 131
         width: 27
         height: 19
-        text: qsTr("X")
+        text: "X"
         horizontalAlignment: Text.AlignHCenter
     }
 
@@ -74,7 +74,7 @@ Window {
         y: 131
         width: 27
         height: 19
-        text: qsTr("Y")
+        text: "Y"
         horizontalAlignment: Text.AlignHCenter
     }
 
@@ -84,7 +84,7 @@ Window {
         y: 131
         width: 27
         height: 19
-        text: qsTr("Z")
+        text: "Z"
         horizontalAlignment: Text.AlignHCenter
     }
 
@@ -112,9 +112,5 @@ Window {
         text: qsTr("Number of propagations:")
         font.pointSize: 10
     }
-}
 
-/*##^## Designer {
-    D{i:0;autoSize:true;height:480;width:640}
 }
- ##^##*/
