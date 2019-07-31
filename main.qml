@@ -28,7 +28,7 @@ Window {
         x: 115
         y: 49
         text: qsTr("Get current ISS position (ECEF)")
-        onReleased: orbitManager.propagateToCurrentTime() // Trigger a slot in the Python class
+        onReleased: orbitManager.propagate(new Date()) // Trigger a slot in the Python class
     }
 
     TextField {

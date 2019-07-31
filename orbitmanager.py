@@ -1,6 +1,5 @@
-from PySide2.QtCore import Qt, QObject, Signal, Slot, Property, QDate, QTime, QDateTime, QUrl
+import PySide2.QtCore as QtCore
 
-import datetime
 import orekit
 from orekit.pyhelpers import *
 from org.orekit.time import *
@@ -12,10 +11,10 @@ from org.orekit.utils import *
 from org.orekit.models.earth import *
 from org.hipparchus.geometry.euclidean.threed import *
 
-class OrbitManager(QObject):
-    positionUpdated = Signal()
-    altitudeUpdated = Signal()
-    propagationFinished = Signal()
+class OrbitManager(QtCore.QObject):
+    positionUpdated = QtCore.Signal()
+    altitudeUpdated = QtCore.Signal()
+    propagationFinished = QtCore.Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -46,7 +45,7 @@ class OrbitManager(QObject):
         self._altitude = 0.0
         self.altitudeUpdated.emit()
 
-    @Property(float, notify=positionUpdated)
+    @QtCore.Property(float, notify=positionUpdated)
     def rx_itrf(self):
         return self._rx_itrf
 
@@ -56,7 +55,7 @@ class OrbitManager(QObject):
             self._rx_itrf = rx_itrf
             self.positionUpdated.emit()
 
-    @Property(float, notify=positionUpdated)
+    @QtCore.Property(float, notify=positionUpdated)
     def ry_itrf(self):
         return self._ry_itrf
 
@@ -66,7 +65,7 @@ class OrbitManager(QObject):
             self._ry_itrf = ry_itrf
             self.positionUpdated.emit()
 
-    @Property(float, notify=positionUpdated)
+    @QtCore.Property(float, notify=positionUpdated)
     def rz_itrf(self):
         return self._rz_itrf
 
@@ -76,25 +75,18 @@ class OrbitManager(QObject):
             self._rz_itrf = rz_itrf
             self.positionUpdated.emit()
 
-    @Property(float, notify=altitudeUpdated)
-    def altitude(self):
-        return self._altitude
-
-    @altitude.setter
-    def set_altitude(self, altitude):
-        if altitude != self._altitude:
-            self._altitude = altitude
-            self.altitudeUpdated.emit()
-
-    @Slot()
-    def propagateToCurrentTime(self):
-        pv_coordinates = self._propagator.getPVCoordinates(datetime_to_absolutedate(datetime.utcnow()),
+    @QtCore.Slot(QtCore.QDateTime)
+    def propagate(self, qdatetime: QtCore.QDateTime):
+        """
+        Propagates the ISS orbit to the datetime passed as parameter.
+        :param qdatetime: QDateTime object passed from QML
+        """
+        pydatetime = qdatetime.toUTC().toPython()
+        print(pydatetime)
+        pv_coordinates = self._propagator.getPVCoordinates(datetime_to_absolutedate(pydatetime),
                                                            self._itrf)
         pos_itrf = pv_coordinates.getPosition()
         self.set_rx_itrf(1e-3 * pos_itrf.getX())  # Converting to km
         self.set_ry_itrf(1e-3 * pos_itrf.getY())
         self.set_rz_itrf(1e-3 * pos_itrf.getZ())
-
-        self.set_altitude(1e-3 * (pos_itrf.getNorm() - Constants.WGS84_EARTH_EQUATORIAL_RADIUS))
-
         self.propagationFinished.emit()
